@@ -9,6 +9,7 @@
         public string? Email { get; set; }
         public bool Favorite { get; set; }
         public string? ImageUrl { get; set; }
+        public List<Books>? Book { get; set; }
 
     }
 }
