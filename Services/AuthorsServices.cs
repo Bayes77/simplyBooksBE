@@ -22,17 +22,14 @@ namespace simplyBooksBE.Services
         {
             return await _authorsRepository.CreateAuthorAsync(author);
         }
-        public async Task<Authors> UpdateAuthorAsync(Authors author)
+        public async Task<Authors> UpdateAuthorAsync(int id, Authors author)
         {
-            return await _authorsRepository.UpdateAuthorAsync(author);
+            return await _authorsRepository.UpdateAuthorAsync(id, author);
         }
         public async Task<Authors> DeleteAuthorAsync(int id)
         {
             return await _authorsRepository.DeleteAuthorAsync(id);
         }
-        public async Task<Authors> PostAuthorAsync(Authors author)
-        {
-            return await _authorsRepository.PostAuthorAsync(author);
-        }
+      
     }
 }

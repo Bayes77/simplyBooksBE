@@ -29,9 +29,19 @@ namespace simplyBooksBE.Repositories
             return book;
         }
 
-        public async Task<Books> UpdateBookAsync(Books book)
+        public async Task<Books> UpdateBookAsync(int id, Books book)
         {
-            _context.Entry(book).State = EntityState.Modified;
+            var existingBook = await _context.Books.FindAsync(id);
+            if (existingBook == null)
+            {
+                return null;
+            }
+            existingBook.Title = book.Title;
+            existingBook.Author = book.Author;
+            existingBook.Price = book.Price;
+            existingBook.Sale = book.Sale;
+            existingBook.ImageUrl = book.ImageUrl;
+            existingBook.Description = book.Description;
             await _context.SaveChangesAsync();
             return book;
         }
@@ -41,15 +51,9 @@ namespace simplyBooksBE.Repositories
             var book = await _context.Books.FindAsync(id);
             if (book != null)
             {
-                _context.Books.Remove(book);
-                await _context.SaveChangesAsync();
+                return null;
             }
-            return book;
-        }
-
-        public async Task<Books> PostBookAsync(Books book)
-        {
-            _context.Books.Add(book);
+            _context.Books.Remove(book);
             await _context.SaveChangesAsync();
             return book;
         }

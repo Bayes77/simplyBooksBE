@@ -2,6 +2,7 @@
 using simplyBooksBE.Interfaces;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace simplyBooksBE.Endpoints
 {
@@ -16,36 +17,44 @@ namespace simplyBooksBE.Endpoints
                 return await authorsServices.GetAllAuthorsAsync();
             })
                 .WithName("GetAllAuthors")
+                .WithOpenApi()
                 .Produces<List<Authors>>(StatusCodes.Status200OK);
 
             group.MapGet("/{id}", async (IAuthorsServices authorsServices, int id) =>
             {
-                return await authorsServices.GetAuthorByIdAsync(id);
+                var author = await authorsServices.GetAuthorByIdAsync(id);
+                return Results.Ok(author);
             })
                 .WithName("GetAuthorById")
+                .WithOpenApi()
                 .Produces<Authors>(StatusCodes.Status200OK);
 
             group.MapPost("/", async (IAuthorsServices authorsServices, Authors author) =>
             {
-                return await authorsServices.CreateAuthorAsync(author);
+                var authorExsists = await authorsServices.CreateAuthorAsync(author);
+                return Results.Created($"/api/authors/{authorExsists.ID}", authorExsists);
             })
                 .WithName("CreateAuthor")
+                .WithOpenApi()
                 .Produces<Authors>(StatusCodes.Status201Created);
 
-            group.MapPut("/{id}", async (IAuthorsServices authorsServices, int id, Authors author) =>
-             {
-                 return await authorsServices.UpdateAuthorAsync(author);
-             })
-                 .WithName("UpdateAuthor")
-                 .Produces<Authors>(StatusCodes.Status200OK);
-            group.MapDelete("/{id}", async (IAuthorsServices authorsServices, int id) =>
+            group.MapPut("/{id}", async (IAuthorsServices authorsServices, int id, [FromBody] Authors author) =>
             {
-                return await authorsServices.DeleteAuthorAsync(id);
+                var updatedAuthor = await authorsServices.UpdateAuthorAsync(id, author);
+                return Results.Ok(updatedAuthor);
             })
-                .WithName("DeleteAuthor")
+                .WithName("UpdateAuthor")
+                   .WithOpenApi()
                 .Produces<Authors>(StatusCodes.Status200OK);
 
-
+            group.MapDelete("/{id}", async (IAuthorsServices authorsServices, int id) =>
+            {
+                var author = await authorsServices.DeleteAuthorAsync(id);
+                return Results.NoContent();
+            })
+                .WithName("DeleteAuthor")
+                .WithOpenApi()
+                .Produces<Authors>(StatusCodes.Status200OK);
         }
     }
 }

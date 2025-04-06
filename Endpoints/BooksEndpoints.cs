@@ -16,6 +16,7 @@ namespace simplyBooksBE.Endpoints
                 return await booksServices.GetAllBooksAsync();
             })
                 .WithName("GetAllBooks")
+                .WithOpenApi()
                 .Produces<List<Books>>(StatusCodes.Status200OK);
 
             group.MapGet("/{id}", async (IBooksServices booksServices, int id) =>
@@ -23,6 +24,7 @@ namespace simplyBooksBE.Endpoints
                 return await booksServices.GetBookByIdAsync(id);
             })
                 .WithName("GetBookById")
+                .WithOpenApi()
                 .Produces<Books>(StatusCodes.Status200OK);
 
             group.MapPost("/", async (IBooksServices booksServices, Books book) =>
@@ -30,13 +32,16 @@ namespace simplyBooksBE.Endpoints
                 return await booksServices.CreateBookAsync(book);
             })
                 .WithName("CreateBook")
+                .WithOpenApi()
                 .Produces<Books>(StatusCodes.Status201Created);
 
             group.MapPut("/{id}", async (IBooksServices booksServices, int id, Books book) =>
              {
-                 return await booksServices.UpdateBookAsync(book);
+                 var existingBook = await booksServices.UpdateBookAsync(id,book);
+                 return Results.Ok(book);
              })
                  .WithName("UpdateBook")
+                    .WithOpenApi()
                  .Produces<Books>(StatusCodes.Status200OK);
 
             group.MapDelete("/{id}", async (IBooksServices booksServices, int id) =>
@@ -44,6 +49,7 @@ namespace simplyBooksBE.Endpoints
                 return await booksServices.DeleteBookAsync(id);
             })
                 .WithName("DeleteBook")
+                .WithOpenApi()
                 .Produces<Books>(StatusCodes.Status200OK);
-        }
+        }    }
 }

@@ -31,9 +31,18 @@ namespace simplyBooksBE.Repositories
             return author;
         }
 
-        public async Task<Authors> UpdateAuthorAsync(Authors author)
+        public async Task<Authors> UpdateAuthorAsync(int id, Authors author)
         {
-            _context.Entry(author).State = EntityState.Modified;
+            var existingAuthor = await _context.Authors.FindAsync(id);
+            if (existingAuthor == null)
+            {
+                return null;
+            }
+            existingAuthor.First_Name = author.First_Name;
+            existingAuthor.Last_Name = author.Last_Name;
+            existingAuthor.Email = author.Email;
+            existingAuthor.Favorite = author.Favorite;
+            existingAuthor.ImageUrl = author.ImageUrl;
             await _context.SaveChangesAsync();
             return author;
         }

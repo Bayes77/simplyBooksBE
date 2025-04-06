@@ -27,9 +27,9 @@ namespace simplyBooksBE.Services
             return await _booksRepository.CreateBookAsync(book);
         }
 
-        public async Task<Books> UpdateBookAsync(Books book)
+        public async Task<Books> UpdateBookAsync(int id, Books book)
         {
-            return await _booksRepository.UpdateBookAsync(book);
+            return await _booksRepository.UpdateBookAsync(id,book);
         }
 
         public async Task<Books> DeleteBookAsync(int id)
@@ -37,10 +37,7 @@ namespace simplyBooksBE.Services
             return await _booksRepository.DeleteBookAsync(id);
         }
 
-        public async Task<Books> PostBookAsync(Books book)
-        {
-            return await _booksRepository.PostBookAsync(book);
-        }
+       
 
     }
 }
