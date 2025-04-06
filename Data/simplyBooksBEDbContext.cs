@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using simplyBooksBE.Models;
-using simplyBooksBE.Data;
 
-namespace simplyBooksBE
+namespace simplyBooksBE.Data
 {
     public class simplyBooksBEDbContext : DbContext
     {
