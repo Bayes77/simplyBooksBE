@@ -38,7 +38,7 @@ namespace simplyBooksBE.Endpoints
                 .WithOpenApi()
                 .Produces<Authors>(StatusCodes.Status201Created);
 
-            group.MapPut("/{id}", async (IAuthorsServices authorsServices, int id, [FromBody] Authors author) =>
+            group.MapPut("/{id}", async (IAuthorsServices authorsServices, int id,  Authors author) =>
             {
                 var updatedAuthor = await authorsServices.UpdateAuthorAsync(id, author);
                 return Results.Ok(updatedAuthor);
